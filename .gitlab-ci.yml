@@ -1,0 +1,87 @@
+include: https://gitlab/Sensirion/Python/ci-config-python/raw/master/gitlab-ci-template-v2.yml
+stages:
+  - prepare
+  - build
+  - deploy
+
+check_rst_syntax:
+  stage: prepare
+  extends: .check_rst_syntax_v2
+
+check_editorconfig:
+  stage: prepare
+  extends: .check_editorconfig_v2
+
+
+py3p6_linux_build:
+  stage: build
+  extends: .py3p6_linux_build_v2
+  variables:
+    PYTEST_ADDOPTS: '-m "not needs_device"'
+
+py3p8_linux_build:
+  stage: build
+  extends: .py3p8_linux_build_v2
+  variables:
+    PYTEST_ADDOPTS: '-m "not needs_device"'
+
+
+py3p8_64bit_win_build:
+  stage: build
+  extends: .py3p8_64bit_win_docker_build_v2
+  variables:
+    PYTEST_ADDOPTS: '-m "not needs_device"'
+
+build_docs:
+  stage: build
+  extends: .build_docs_v2
+  script:
+    - apt-get update && apt-get install -y graphviz
+    - python setup.py install
+    - pip install -r docs/requirements.txt
+    - chmod 777 ./ci/set_git_config.sh
+    - ./ci/set_git_config.sh
+    - sphinx-versioning build -r "$CI_COMMIT_REF_NAME" -w "$CI_COMMIT_REF_NAME" docs docs/_build/html
+  after_script: [] # overwrite after_script from template
+  artifacts:
+    paths: [docs/_build]
+    expire_in: 1 week
+    when: always
+
+deploy_staging:
+  extends: .deploy_staging_v2
+
+deploy_stable:
+  extends: .deploy_stable_v2
+  environment:
+    name: pypi.org
+    url: https://pypi.org/project/sensirion_i2c_scd30/
+  before_script:
+    - pip install twine~=1.12.1
+  script:
+    - PKG_VERSION=$(python setup.py --version --quiet | tail -n1)
+    - TAG_VERSION=$(git describe --tags)
+    - if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then echo "Tag Version ($TAG_VERSION) != Package Version ($PKG_VERSION)" && exit 1; fi
+    - twine upload dist/*
+
+deploy_docs:
+  stage: deploy
+  tags: [linux, docker]
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.6.0
+  dependencies: []
+  only: [master, tags]
+  script:
+    - apt-get update && apt-get install -y graphviz
+    - python setup.py install
+    - pip install -r docs/requirements.txt
+    - chmod 777 ./ci/set_git_config.sh
+    - ./ci/set_git_config.sh
+    - sphinx-versioning push docs gh-pages .
+
+TODO_check:
+  stage: prepare
+  image:
+      name: registry.gitlab.sensirion.lokal/mso-sw/drivers/docker-driver-generator:0.1.0
+  tags: [linux, docker]
+  script:
+    - '! grep -rnw --exclude=.gitlab-ci.yml --exclude-dir=.git . -e "TODO"'
