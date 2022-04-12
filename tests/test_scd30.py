@@ -22,17 +22,23 @@ from sensirion_i2c_scd30.device import Scd30Device
 @pytest.fixture
 def sensor(bridge):
     # Configure SensorBridge port 1
-    bridge.set_i2c_frequency(SensorBridgePort.ONE, frequency=100e3)
+    bridge.set_i2c_frequency(SensorBridgePort.ONE, frequency=50e3)
     bridge.set_supply_voltage(SensorBridgePort.ONE, voltage=3.3)
     bridge.switch_supply_on(SensorBridgePort.ONE)
 
-    # Create SFM-Device device
+    # Create SCD30 device
     i2c_transceiver = SensorBridgeI2cProxy(bridge, port=SensorBridgePort.ONE)
     channel = I2cChannel(I2cConnection(i2c_transceiver),
                          slave_address=0x61,
                          crc=CrcCalculator(8, 0x31, 0xff, 0x0))
     dev = Scd30Device(channel)
-    time.sleep(0.1)  # some time is required to power up the device
+    time.sleep(2)  # some time is required to power up the device
+    try:
+        dev.stop_periodic_measurement()  # force sensor to be in defined state
+    except Exception:
+        pass
+
+    time.sleep(0.1)
     yield dev
     # make sure the channel is powered off after executing tests
     bridge.switch_supply_off(SensorBridgePort.ONE)
@@ -108,13 +114,13 @@ def test_soft_reset1(sensor):
 @pytest.mark.needs_device
 def test_start_periodic_measurement1(sensor):
     sensor.start_periodic_measurement(0)
-    (co2_concentration, temperature, humidiy
+    (co2_concentration, temperature, humidity
      ) = sensor.blocking_read_measurement_data()
-    print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidiy: {humidiy}; ")
+    print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidity: {humidity}; ")
     sensor.force_recalibration(500)
     sensor.await_data_ready()
-    (co2_concentration, temperature, humidiy
+    (co2_concentration, temperature, humidity
      ) = sensor.read_measurement_data()
-    print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidiy: {humidiy}; ")
+    print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidity: {humidity}; ")
     sensor.stop_periodic_measurement()
 

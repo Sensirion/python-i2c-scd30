@@ -24,13 +24,14 @@ See user manual at
 
 | *Pin* | *Cable Color* | *Name* | *Description*  | *Comments* |
 |-------|---------------|:------:|----------------|------------|
-| 1 |  |VDD | Supply Voltage | 3.3 to 5.5V
-| 2 |  |GND | Ground | 
-| 3 |  |SCL | I2C: Serial clock input | 
-| 4 |  |SDA | I2C: Serial data input / output | 
-| 5 |  |RDY |  | High when data is available
-| 6 |  |PWM |  | 
-| 7 |  |SEL | Interface select | Interface select; Pull to ground or floating for I2c
+| 1 | red |VDD | Supply Voltage | 3.3 to 5.5V
+| 2 | black |GND | Ground | 
+| 3 | yellow |SCL | I2C: Serial clock input | 
+| 4 | green |SDA | I2C: Serial data input / output | 
+| 5 |  |RDY | High when data is available | do not connect
+| 6 |  |PWM |  | do not connect
+| 7 | blue |SEL | Interface select | Pull to ground or floating for I2c
+
 ## Development
 
 We develop and test this driver using our company internal tools (version
