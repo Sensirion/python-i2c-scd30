@@ -22,7 +22,7 @@ from sensirion_i2c_scd30.device import Scd30Device
 @pytest.fixture
 def sensor(bridge):
     # Configure SensorBridge port 1
-    bridge.set_i2c_frequency(SensorBridgePort.ONE, frequency=100e3)
+    bridge.set_i2c_frequency(SensorBridgePort.ONE, frequency=50e3)
     bridge.set_supply_voltage(SensorBridgePort.ONE, voltage=3.3)
     bridge.switch_supply_on(SensorBridgePort.ONE)
 
