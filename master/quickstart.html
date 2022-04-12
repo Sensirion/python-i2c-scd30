@@ -211,23 +211,24 @@ execute a simple measurement.</p>
                          <span class="n">crc</span><span class="o">=</span><span class="n">CrcCalculator</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mh">0x31</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x0</span><span class="p">))</span>
     <span class="n">sensor</span> <span class="o">=</span> <span class="n">Scd30Device</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
+        <span class="n">sensor</span><span class="o">.</span><span class="n">stop_periodic_measurement</span><span class="p">()</span>
         <span class="n">sensor</span><span class="o">.</span><span class="n">soft_reset</span><span class="p">()</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
         <span class="o">...</span>
-    <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span>
-     <span class="p">)</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">read_firmware_version</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;major: </span><span class="si">{</span><span class="n">major</span><span class="si">}</span><span class="s2">; &quot;</span> <span class="sa">f</span><span class="s2">&quot;minor: </span><span class="si">{</span><span class="n">minor</span><span class="si">}</span><span class="s2">; &quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">)</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">read_firmware_version</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;firmware version major: </span><span class="si">{</span><span class="n">major</span><span class="si">}</span><span class="s2">; minor: </span><span class="si">{</span><span class="n">minor</span><span class="si">}</span><span class="s2">; &quot;</span><span class="p">)</span>
     <span class="n">sensor</span><span class="o">.</span><span class="n">start_periodic_measurement</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
-            <span class="p">(</span><span class="n">co2_concentration</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">humidiy</span>
+            <span class="p">(</span><span class="n">co2_concentration</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span>
              <span class="p">)</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">blocking_read_measurement_data</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;co2_concentration: </span><span class="si">{</span><span class="n">co2_concentration</span><span class="si">}</span><span class="s2">; &quot;</span> <span class="sa">f</span><span class="s2">&quot;temperature: </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s2">; &quot;</span> <span class="sa">f</span><span class="s2">&quot;humidiy: </span><span class="si">{</span><span class="n">humidiy</span><span class="si">}</span><span class="s2">; &quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;co2_concentration: </span><span class="si">{</span><span class="n">co2_concentration</span><span class="si">}</span><span class="s2">; temperature: </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s2">; humidity: </span><span class="si">{</span><span class="n">humidity</span><span class="si">}</span><span class="s2">; &quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
             <span class="k">continue</span>
-    <span class="n">sensor</span><span class="o">.</span><span class="n">soft_reset</span><span class="p">()</span>
+    <span class="n">sensor</span><span class="o">.</span><span class="n">stop_periodic_measurement</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
