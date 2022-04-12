@@ -34,16 +34,16 @@ with ShdlcSerialPort(port='COM1', baudrate=460800) as port:
         time.sleep(2.0)
     except BaseException:
         ...
-    (major, minor
-     ) = sensor.read_firmware_version()
-    print(f"firmware version major: {major}; " f"minor: {minor}; ")
+
+    (major, minor) = sensor.read_firmware_version()
+    print(f"firmware version major: {major}; minor: {minor}; ")
     sensor.start_periodic_measurement(0)
     for i in range(30):
         try:
             time.sleep(1.5)
             (co2_concentration, temperature, humidity
              ) = sensor.blocking_read_measurement_data()
-            print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidity: {humidity}; ")
+            print(f"co2_concentration: {co2_concentration}; temperature: {temperature}; humidity: {humidity}; ")
         except BaseException:
             continue
     sensor.stop_periodic_measurement()
