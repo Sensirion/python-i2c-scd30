@@ -29,20 +29,21 @@ with ShdlcSerialPort(port='COM1', baudrate=460800) as port:
                          crc=CrcCalculator(8, 0x31, 0xff, 0x0))
     sensor = Scd30Device(channel)
     try:
+        sensor.stop_periodic_measurement()
         sensor.soft_reset()
         time.sleep(2.0)
     except BaseException:
         ...
     (major, minor
      ) = sensor.read_firmware_version()
-    print(f"major: {major}; " f"minor: {minor}; ")
+    print(f"firmware version major: {major}; " f"minor: {minor}; ")
     sensor.start_periodic_measurement(0)
     for i in range(30):
         try:
             time.sleep(1.5)
-            (co2_concentration, temperature, humidiy
+            (co2_concentration, temperature, humidity
              ) = sensor.blocking_read_measurement_data()
-            print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidiy: {humidiy}; ")
+            print(f"co2_concentration: {co2_concentration}; " f"temperature: {temperature}; " f"humidity: {humidity}; ")
         except BaseException:
             continue
-    sensor.soft_reset()
+    sensor.stop_periodic_measurement()
