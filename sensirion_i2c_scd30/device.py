@@ -22,6 +22,7 @@ from sensirion_i2c_scd30.commands import (ActivateAutoCalibration, ForceRecalibr
 
 
 class Scd30DeviceBase:
+    """Low level API implementation of SCD30"""
 
     def __init__(self, channel):
         self._channel = channel
@@ -217,6 +218,8 @@ class Scd30DeviceBase:
 
 
 class Scd30Device(Scd30DeviceBase):
+    """Driver class implementation of SCD30"""
+
     scd30 = MixinAccess()
 
     def __init__(self, channel):
