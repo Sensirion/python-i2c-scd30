@@ -14,7 +14,7 @@ install_requires = [
     'sensirion-i2c-driver',
     'sensirion-i2c-adapter',
     'sensirion_driver_support_types~=0.1.0',
-    'sensirion-shdlc-sensorbridge~=0.1.1'
+    'sensirion-shdlc-sensorbridge>=0.1.1,<0.3.0'
 ]
 
 # Packages required for tests and docs
