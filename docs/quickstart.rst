@@ -12,7 +12,7 @@ The driver for the `Sensirion SEK-SensorBridge`_ can be installed with
 
     pip install sensirion-shdlc-sensorbridge
 
-.. _Sensirion SEK-SensorBridge: https://developer.sensirion.com/sensirion-products/sek-sensorbridge/
+.. _Sensirion SEK-SensorBridge: https://developer.sensirion.com/product-support/sek-sensorbridge/
 
 Example script
 ~~~~~~~~~~~~~~
