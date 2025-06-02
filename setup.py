@@ -13,7 +13,7 @@ python_requires = '>=3.6, <4'
 install_requires = [
     'sensirion-i2c-driver',
     'sensirion-i2c-adapter',
-    'sensirion_driver_support_types~=0.1.0',
+    'sensirion-driver-support-types>=1.1.0,<2.0.0',
     'sensirion-shdlc-sensorbridge>=0.1.1,<0.3.0'
 ]
 
