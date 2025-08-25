@@ -11,10 +11,10 @@ python_requires = '>=3.6, <4'
 
 # Packages that this package imports. List everything apart from standard lib packages.
 install_requires = [
-    'sensirion-i2c-driver',
-    'sensirion-i2c-adapter',
-    'sensirion-driver-support-types>=1.1.0,<2.0.0',
-    'sensirion-shdlc-sensorbridge>=0.1.1,<0.3.0'
+    'sensirion-i2c-driver>=1.0.0,<2.0',
+    'sensirion-driver-adapters>=2.3.0,<3.0',
+    'sensirion-driver-support-types>=1.2.0,<2.0',
+    'sensirion-shdlc-sensorbridge>=0.1.0,<0.3.0'
 ]
 
 # Packages required for tests and docs
@@ -23,12 +23,6 @@ extras_require = {
         'flake8~=3.7.8',
         'pytest~=6.2.5',
         'pytest-cov~=3.0.0',
-    ],
-    'docs': [
-        'click==8.0.4',
-        'jinja2==3.0.1',
-        'sphinx~=2.2.1',
-        'sphinx-rtd-theme~=0.4.3',
     ]
 }
 
@@ -40,11 +34,9 @@ if result:
 else:
     raise RuntimeError("Unable to find version string")
 
-# Use README.rst and CHANGELOG.rst as package description
+# Use README.rst and CHANGELOG.md as package description
 root_path = os.path.dirname(__file__)
-readme = open(os.path.join(root_path, 'README.rst')).read()
-changelog = open(os.path.join(root_path, 'CHANGELOG.rst')).read()
-long_description = readme.strip() + "\n\n" + changelog.strip() + "\n"
+long_description = open(os.path.join(root_path, 'README.md')).read()
 
 setup(
     name='sensirion_i2c_scd30',
@@ -56,17 +48,23 @@ setup(
     keywords="""Sensirion SCD30
         I2C
         SCD30""",
-    url='https://sensirion.github.io/python-i2c-scd30/',
+    project_urls={
+        "Documentation": "https://sensirion.github.io/python-i2c-scd30",
+        "Repository": "https://github.com/Sensirion/python-i2c-scd30",
+        "Changelog": "https://github.com/Sensirion/python-i2c-scd30/blob/master/CHANGELOG.md",
+    },
     packages=find_packages(exclude=['tests', 'tests.*']),
     long_description=long_description,
+    long_description_content_type='text/markdown',
     python_requires=python_requires,
     install_requires=install_requires,
     extras_require=extras_require,
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: Other/Proprietary License',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
 )

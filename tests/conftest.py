@@ -2,8 +2,10 @@
 # (c) Copyright 2021 Sensirion AG, Switzerland
 
 import pytest
-from sensirion_shdlc_driver import ShdlcSerialPort, ShdlcConnection
-from sensirion_shdlc_sensorbridge import SensorBridgeShdlcDevice
+from sensirion_shdlc_sensorbridge import SensorBridgePort
+from sensirion_driver_adapters.i2c_adapter.sensor_bridge_i2c_channel_provider import SensorBridgeI2cChannelProvider
+from sensirion_driver_adapters.mocks.mock_i2c_channel_provider import MockI2cChannelProvider
+from sensirion_i2c_scd30.response_provider import Scd30ResponseProvider
 
 
 def pytest_addoption(parser):
@@ -44,9 +46,14 @@ def pytest_report_header(config):
 
 
 @pytest.fixture(scope="session")
-def bridge(request):
-    serial_port = _get_serial_port(request.config, validate=True)
+def channel_provider(request):
+    serial_port = _get_serial_port(request.config)
+
     serial_bitrate = _get_serial_bitrate(request.config)
-    with ShdlcSerialPort(serial_port, serial_bitrate) as port:
-        dev = SensorBridgeShdlcDevice(ShdlcConnection(port), slave_address=0)
-        yield dev
+    if serial_port is not None:
+        yield SensorBridgeI2cChannelProvider(sensor_bridge_port=SensorBridgePort.ONE,
+                                             serial_baud_rate=serial_bitrate,
+                                             serial_port=serial_port)
+    else:
+        yield MockI2cChannelProvider(command_width=2,
+                                     response_provider=Scd30ResponseProvider())
