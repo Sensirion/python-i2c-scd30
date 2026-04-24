@@ -1,9 +1,10 @@
+import struct
 import sensirion_driver_adapters.mocks.response_provider as rp
 
 
 class Scd30ResponseProvider(rp.ResponseProvider):
 
-    RESPONSE_MAP = {}
+    RESPONSE_MAP = {0xd033: struct.pack('>32s', rp.random_ascii_string(32))}
 
     def get_id(self) -> str:
         return 'Scd30ResponseProvider'
