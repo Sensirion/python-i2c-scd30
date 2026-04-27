@@ -7,7 +7,7 @@ name = "sensirion_i2c_scd30"
 description = "I2C driver for the Sensirion SCD30 sensor family"
 
 readme = "README.md"
-version =  "1.1.0"
+version =  "1.1.1"
 requires-python = ">=3.8,<4.0"
 
 authors = [

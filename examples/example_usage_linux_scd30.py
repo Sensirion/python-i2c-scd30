@@ -7,7 +7,7 @@
 #
 # Generator:     sensirion-driver-generator 1.6.1
 # Product:       scd30
-# Model-Version: 1.1.0
+# Model-Version: 1.1.1
 #
 
 import argparse
@@ -31,6 +31,9 @@ with LinuxI2cTransceiver(args.i2c_port) as i2c_transceiver:
         time.sleep(2.0)
     except BaseException:
         ...
+    serial_number = sensor.read_serial_number()
+    print(f"serial_number: {serial_number}; "
+          )
     (major, minor
      ) = sensor.read_firmware_version()
     print(f"major: {major}; "

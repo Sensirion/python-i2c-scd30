@@ -7,7 +7,7 @@
 #
 # Generator:     sensirion-driver-generator 1.6.1
 # Product:       scd30
-# Model-Version: 1.1.0
+# Model-Version: 1.1.1
 #
 
 import pytest
@@ -71,6 +71,12 @@ def test_get_auto_calibration_status1(sensor):
 def test_get_force_recalibration_status1(sensor):
     co2_ref_concentration = sensor.get_force_recalibration_status()
     print(f"co2_ref_concentration: {co2_ref_concentration}; "
+          )
+
+
+def test_read_serial_number1(sensor):
+    serial_number = sensor.read_serial_number()
+    print(f"serial_number: {serial_number}; "
           )
 
 
