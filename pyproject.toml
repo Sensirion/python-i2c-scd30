@@ -8,7 +8,8 @@ description = "I2C driver for the Sensirion SCD30 sensor family"
 
 readme = "README.md"
 version =  "1.1.1"
-requires-python = ">=3.8,<4.0"
+
+requires-python = ">=3.8.4,<4.0"
 
 authors = [
     { name = "Sensirion", email = "info@sensirion.com" },
@@ -45,8 +46,10 @@ dependencies = [
 docs=[
     "jinja2~=3.1.6",
     "sphinx-rtd-theme==3.0.2",
-    "sphinx==8.2.3",
+    "sphinx>=7.0,<8.0;python_version < '3.11'",
+    "sphinx==8.2.3;python_version >= '3.11'",
     "lazy-object-proxy ~=1.7.1",
+    "sphinx-tabs~=3.5.0",
     "sphinx-autoapi~=3.0.0",
 ]
 
